@@ -107,6 +107,24 @@ netalert-triage/
 ├─ requirements.txt
 └─ pyproject.toml
 ```
+---
+
+## 🧰 Using the Makefile
+
+This Makefile supports both Windows and UNIX systems.
+Simply run make setup, make test, or make report from the project root - it will detect your OS automatically.
+
+# Create virtual environment, install dependencies, and prepare environment
+make setup
+
+# Run all tests
+make test
+
+# Generate the demo triage report
+make report
+
+# Clean up cached files and generated artifacts
+make clean
 
 ---
 
