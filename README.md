@@ -118,8 +118,11 @@ This is completely optional; all commands can be run manually using standard Pyt
 You’ll only need make if you want one-line shortcuts such as:
 
 make setup     # create virtual environment + install dependencies
+
 make test      # run unit tests
+
 make report    # generate the sample triage report
+
 make clean     # remove cached files and artifacts
 
 The Makefile is simply a developer-experience tool, it isn’t required to run or evaluate this project.
