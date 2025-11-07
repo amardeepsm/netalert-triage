@@ -11,5 +11,10 @@ requires-python = ">=3.11"
 authors = [{ name = "Amardeep Marwaha" }]
 dependencies = []
 
-[tool.setuptools]
-packages = ["netalert"]
+[tool.setuptools.package-dir]
+"" = "."
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["netalert*"]
+namespaces = false
