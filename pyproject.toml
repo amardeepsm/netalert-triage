@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "netalert"
+version = "0.1.0"
+description = "NetAlert Triage - incident triage demo"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Amardeep Marwaha" }]
+dependencies = []
+
+[tool.setuptools]
+packages = ["netalert"]
