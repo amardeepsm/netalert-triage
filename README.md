@@ -1,110 +1,120 @@
 # NetAlert Triage
 
-An automated incident-triage framework that correlates **security alerts** with **network-gateway download logs**, applies **contextual heuristics**, and flags **likely false positives**. Ships with a full **demo mode** (no secrets), sample data, CI, and docs.
+[![CI](https://github.com/amardeepsm/netalert-triage/actions/workflows/ci.yml/badge.svg)](https://github.com/amardeepsm/netalert-triage/actions/workflows/ci.yml)
 
-> *Inspired by real-world incident-response automation challenges at Capgemini (public-safe, open-source version).*
+An automated **incident triage framework** that correlates **security alerts** with **network-gateway logs**, applies contextual **heuristics**, and flags **likely false positives** before they wake an on-call engineer.
 
-## Features
-- Correlates alert feed ↔ gateway logs (user/IP/time/URL)
-- Heuristic rules (aborted/incomplete download, blocked category, file-type anomalies)
-- Scores events: `LIKELY_FALSE_POSITIVE`, `NEEDS_ANALYST`, `LIKELY_MALICIOUS`
-- Generates a Markdown triage report (artifact in CI)
-- Optional incident system integration (generic REST client, disabled by default)
+> *Inspired by real-world incident-response automation challenges at **Capgemini** (public-safe, open-source adaptation).*
 
-## Quickstart (demo mode)
+---
+
+## ⚙️ Features
+
+* Correlates alerts ↔ gateway logs by user, IP, timestamp, and URL
+* Applies rule-based heuristics for incomplete downloads, blocked categories, and suspicious file types
+* Scores events as `LIKELY_FALSE_POSITIVE`, `NEEDS_ANALYST_REVIEW`, or `LIKELY_MALICIOUS`
+* Generates an evidence-based Markdown triage report (`artifacts/report.md`)
+* Includes optional ServiceNow / Jira hooks (disabled by default)
+* Fully automated CI/CD pipeline via GitHub Actions
+
+---
+
+## 🚀 Quickstart (Demo Mode)
+
 ```bash
-python -m venv .venv && source .venv/bin/activate  # (Windows: .venv\Scripts\activate)
+# 1. Create virtual environment
+python -m venv .venv && source .venv/Scripts/activate  # (PowerShell: .venv\Scripts\Activate.ps1)
+
+# 2. Install dependencies
 pip install -r requirements.txt
+pip install -e .
+pip install pytest
+
+# 3. Run tests
+pytest -q
+
+# 4. Generate a demo triage report
+mkdir -p artifacts
 python -m netalert.run --alerts sample_data/sample_alerts.json --logs sample_data/sample_gateway_logs.json --out artifacts/report.md
 ```
-## How It Works
-NetAlert Triage automates the process of reviewing suspicious download alerts, the kind that often turn out to be false positives during on-call shifts.
 
-It follows a simple four-stage flow:
+Then open `artifacts/report.md` to view the sample output.
 
-## Collect
-The system reads simulated alert data (sample_alerts.json) and network gateway logs (sample_gateway_logs.json).
-These files represent real signals a platform or security engineer might receive from alerting tools.
-## Correlate
-It automatically links alerts and log entries that share the same user, URL, and timestamp window, creating a single unified event to investigate.
-## Analyze
-The engine applies lightweight heuristic rules from netalert/rules/:
-- incomplete_transfer → download aborted or never finished
-- blocked_category → URL blocked by policy before any payload
-- filetype_anomaly → unusual or executable file type
-Each rule contributes to a confidence score and a status label such as LIKELY_FALSE_POSITIVE or NEEDS_ANALYST_REVIEW.
-## Report
-A summary Markdown report is generated (artifacts/report.md) showing the matched alert, rule hits, and reasoning behind the final verdict.
-This mirrors how a real incident triage system would feed data into ServiceNow, Jira, or Slack.
+---
 
-## Summary
+## 🧠 How It Works
 
-## Ingests alert feed:
-  Reads mock security alerts from sample_alerts.json.
-## Loads gateway logs:
-  Simulates real network logs from sample_gateway_logs.json.
-## Correlates events:
-  Matches alerts and logs by user, URL, and timestamp proximity.
-## Applies rule-based logic:
-    - incomplete_transfer: detects aborted or partial downloads
-    - blocked_category: flags URLs blocked by policy
-    - filetype_anomaly: surfaces suspicious MIME types
-## Generates a triage report:
-  Summarizes findings in a clear Markdown format (artifacts/report.md).
-## Optional integrations:
-  Can safely connect to ServiceNow or Jira (disabled by default).
+**NetAlert Triage** automates the manual process of investigating suspicious download alerts — the kind that often turn out to be false positives during out-of-hours shifts.
 
-## Example Output
+It operates in four simple stages:
+
+### 1️⃣ Collect
+
+Reads simulated alert data (`sample_alerts.json`) and gateway logs (`sample_gateway_logs.json`) — representing real signals from monitoring tools.
+
+### 2️⃣ Correlate
+
+Automatically matches alerts and log entries based on user, URL, and timestamp proximity to form unified investigation events.
+
+### 3️⃣ Analyze
+
+Applies lightweight heuristic rules from `netalert/rules/`:
+
+* **incomplete_transfer** → download aborted or never finished
+* **blocked_category** → URL blocked by policy before payload
+* **filetype_anomaly** → executable or unusual file type
+
+Each rule contributes to a score and a confidence label such as `LIKELY_FALSE_POSITIVE`.
+
+### 4️⃣ Report
+
+Produces a clear Markdown triage summary showing matched alerts, rule hits, and reasoning.
+In production, this could feed into systems like **ServiceNow**, **Jira**, or **Slack**.
+
+---
+
+## 🧾 Example Output
+
+```markdown
 # NetAlert Triage Report
 
 ## Alert INC-1001 — LIKELY_FALSE_POSITIVE
 - user: alice
-- src_ip: 10.0.0.15
 - url: http://downloads.example.com/tool.exe
 - score: 3
 
 ### Rule hits
-- **incomplete_transfer** (low): Client aborted or reset the stream before completion.
-- **blocked_category** (low): Category 'malware' blocked prior to body delivery.
-- 
-Open the generated report at `artifacts/report.md`.
+- incomplete_transfer → client aborted before completion
+- blocked_category → URL already blocked by policy
+```
 
-## Production hooks (optional)
-- Provide environment variables to enable the incident client and live log adapters (see `docs/production.md`).
+---
 
-## Repo layout
+## 📁 Repository Structure
+
 ```
 netalert-triage/
-├─ netalert/
+├─ netalert/                 # Core ingestion, correlation, and rule logic
 │  ├─ ingest/
-│  │  ├─ alerts.py
-│  │  └─ gateway.py
 │  ├─ rules/
-│  │  ├─ incomplete_transfer.py
-│  │  ├─ blocked_category.py
-│  │  └─ filetype_anomaly.py
-│  ├─ correlate.py
-│  ├─ decision.py
-│  ├─ reporting.py
 │  ├─ integrations/
-│  │  └─ incident_api.py
 │  └─ run.py
-├─ configs/
-│  └─ rules.yml
-├─ sample_data/
-│  ├─ sample_alerts.json
-│  └─ sample_gateway_logs.json
-├─ artifacts/                # report output (gitignored in real use)
-├─ docs/
-│  ├─ heuristics.md
-│  └─ production.md
-├─ tests/
-│  ├─ test_rules.py
-│  └─ test_pipeline.py
-├─ .github/workflows/ci.yml
+├─ sample_data/              # Demo alerts and gateway logs
+├─ artifacts/                # Output folder (ignored in real use)
+├─ tests/                    # Unit tests (pytest)
+├─ docs/                     # Reference docs
+├─ .github/workflows/ci.yml  # CI pipeline
 ├─ requirements.txt
-└─ README.md
+└─ pyproject.toml
 ```
 
-## Why this matters
-Reduces alert fatigue and MTTR by automatically providing **evidence-based triage**. Designed to be extended with real adapters (CloudWatch, Elasticsearch, Splunk) and incident systems (ServiceNow, Jira) without exposing proprietary details.
+---
+
+## 💡 Why This Matters
+
+Modern platform and security engineers face **alert fatigue** and rising on-call overhead.
+NetAlert Triage demonstrates how simple, open-source automation can reduce noise and improve response time by turning raw logs into contextual insights.
+
+It’s built for clarity, modularity, and safe public demonstration — a reproducible example of how DevOps automation translates real operational pain into elegant, testable code.
+
+---
