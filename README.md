@@ -201,9 +201,19 @@ It reflects how automation tasks could be structured in a real CI/CD environment
 
 ## 💡 Why This Matters
 
-Modern platform and security engineers face **alert fatigue** and rising on-call overhead.
-NetAlert Triage demonstrates how simple, open-source automation can reduce noise and improve response time by turning raw logs into contextual insights.
+Modern platform and security engineers often face alert fatigue, especially during out-of-hours rotations.
+At Capgemini, a recurring challenge arose when malware download alerts triggered automatically.
+Each time, engineers had to manually check:
 
-It’s built for clarity, modularity, and safe public demonstration — a reproducible example of how DevOps automation translates real operational pain into elegant, testable code.
+- Who attempted the download
+- Whether it was actually blocked by the proxy
+- If the download location or file type posed a genuine security risk
 
+This manual workflow required escalating to L3 support to review proxy logs and confirm whether the event was a false positive.
+
+NetAlert Triage automates that entire process.
+It correlates the alert data with gateway logs to identify the responsible user, verifies if the transfer was incomplete or blocked, and evaluates the safety of the download source using heuristic rules.
+The result is an evidence-based triage report that lets engineers close false positives confidently — without waiting for escalation.
+
+By transforming repetitive manual checks into an automated pipeline, NetAlert Triage demonstrates how DevOps and automation principles can meaningfully improve incident management efficiency and reduce escalation overhead.
 ---
