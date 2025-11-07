@@ -18,13 +18,13 @@ pip install -r requirements.txt
 python -m netalert.run --alerts sample_data/sample_alerts.json --logs sample_data/sample_gateway_logs.json --out artifacts/report.md
 ```
 ## How It Works
-A[🔔 Alert Triggered] --> B[📥 Alert Data Ingested<br>(sample_alerts.json)]
-B --> C[🌐 Proxy Log Fetched<br>(sample_gateway_logs.json)]
-C --> D[⚖️ Correlation<br>Match alert ↔ log (user, URL)]
-D --> E[🧮 Heuristic Rules<br>incomplete_transfer<br>blocked_category<br>filetype_anomaly]
-E --> F[🏷️ Label & Score<br>LIKELY_FALSE_POSITIVE or NEEDS_ANALYST]
-F --> G[🧾 Markdown Report<br>(artifacts/report.md)]
-G --> H[(🧰 Optional Integration<br>ServiceNow / Jira Update)]
+A[🔔 Alert Triggered] ------> B[📥 Alert Data Ingested<br>(sample_alerts.json)]
+B ------> C[🌐 Proxy Log Fetched<br>(sample_gateway_logs.json)]
+C ------> D[⚖️ Correlation<br>Match alert ↔ log (user, URL)]
+D ------> E[🧮 Heuristic Rules<br>incomplete_transfer<br>blocked_category<br>filetype_anomaly]
+E ------> F[🏷️ Label & Score<br>LIKELY_FALSE_POSITIVE or NEEDS_ANALYST]
+F ------> G[🧾 Markdown Report<br>(artifacts/report.md)]
+G ------> H[(🧰 Optional Integration<br>ServiceNow / Jira Update)]
 
 ## Summary
 
