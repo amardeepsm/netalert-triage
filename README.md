@@ -109,23 +109,21 @@ netalert-triage/
 ```
 ---
 
-## 🧰 Using the Makefile
-Optional: The Makefile is a convenience. If you don’t have make, run the commands below directly.
+## 🧰 Optional: Using the Makefile
 
-This Makefile supports both Windows and UNIX systems.
-Simply run make setup, make test, or make report from the project root - it will detect your OS automatically.
+A lightweight Makefile is included for convenience, it supports both Windows and UNIX systems and it will detect your OS automatically. Makefile automates common tasks like environment setup, testing, and generating the demo report.
 
-# Create virtual environment, install dependencies, and prepare environment
-make setup
+This is completely optional; all commands can be run manually using standard Python tooling (as shown in the Quickstart section).
 
-# Run all tests
-make test
+You’ll only need make if you want one-line shortcuts such as:
 
-# Generate the demo triage report
-make report
+make setup     # create virtual environment + install dependencies
+make test      # run unit tests
+make report    # generate the sample triage report
+make clean     # remove cached files and artifacts
 
-# Clean up cached files and generated artifacts
-make clean
+The Makefile is simply a developer-experience tool, it isn’t required to run or evaluate this project.
+It reflects how automation tasks could be structured in a real CI/CD environment.
 
 ---
 
