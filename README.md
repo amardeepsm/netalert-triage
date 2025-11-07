@@ -213,7 +213,8 @@ This manual workflow required escalating to L3 support to review proxy logs and 
 
 NetAlert Triage automates that entire process.
 It correlates the alert data with gateway logs to identify the responsible user, verifies if the transfer was incomplete or blocked, and evaluates the safety of the download source using heuristic rules.
-The result is an evidence-based triage report that lets engineers close false positives confidently — without waiting for escalation.
+The result is an evidence-based triage report that lets engineers close false positives confidently, without waiting for escalation.
 
 By transforming repetitive manual checks into an automated pipeline, NetAlert Triage demonstrates how DevOps and automation principles can meaningfully improve incident management efficiency and reduce escalation overhead.
+
 ---
