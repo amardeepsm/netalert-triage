@@ -110,6 +110,7 @@ netalert-triage/
 ---
 
 ## 🧰 Using the Makefile
+# Optional: The Makefile is a convenience. If you don’t have make, run the commands below directly.
 
 This Makefile supports both Windows and UNIX systems.
 Simply run make setup, make test, or make report from the project root - it will detect your OS automatically.
