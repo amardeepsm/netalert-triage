@@ -1,0 +1,16 @@
+[
+  {
+    "id": "INC-1001",
+    "timestamp": "2025-10-20T12:00:05Z",
+    "user": "alice",
+    "src_ip": "10.0.0.15",
+    "url": "http://downloads.example.com/tool.exe"
+  },
+  {
+    "id": "INC-1002",
+    "timestamp": "2025-10-20T12:02:10Z",
+    "user": "bob",
+    "src_ip": "10.0.0.21",
+    "url": "http://example.org/archive.zip"
+  }
+]

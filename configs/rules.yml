@@ -1,0 +1,18 @@
+rules:
+  incomplete_transfer:
+    min_completion_ratio: 0.5   # bytes_sent / expected_size
+    statuses_considered_incomplete: ["CLIENT_ABORT", "STREAM_RESET"]
+    weight: 2
+    label: LIKELY_FALSE_POSITIVE
+
+  blocked_category:
+    blocked_categories: ["malware", "phishing", "botnet"]
+    treat_blocked_as_no_body_delivered: true
+    weight: 1
+    label: LIKELY_FALSE_POSITIVE
+
+  filetype_anomaly:
+    deny_mime_types: ["application/x-msdownload"]
+    warn_mime_types: ["application/octet-stream"]
+    weight: 2
+    label: NEEDS_ANALYST
