@@ -17,7 +17,45 @@ python -m venv .venv && source .venv/bin/activate  # (Windows: .venv\Scripts\act
 pip install -r requirements.txt
 python -m netalert.run --alerts sample_data/sample_alerts.json --logs sample_data/sample_gateway_logs.json --out artifacts/report.md
 ```
+## How It Works
+A[🔔 Alert Triggered] --> B[📥 Alert Data Ingested<br>(sample_alerts.json)]
+B --> C[🌐 Proxy Log Fetched<br>(sample_gateway_logs.json)]
+C --> D[⚖️ Correlation<br>Match alert ↔ log (user, URL)]
+D --> E[🧮 Heuristic Rules<br>incomplete_transfer<br>blocked_category<br>filetype_anomaly]
+E --> F[🏷️ Label & Score<br>LIKELY_FALSE_POSITIVE or NEEDS_ANALYST]
+F --> G[🧾 Markdown Report<br>(artifacts/report.md)]
+G --> H[(🧰 Optional Integration<br>ServiceNow / Jira Update)]
 
+## Summary
+
+## Ingests alert feed:
+  Reads mock security alerts from sample_alerts.json.
+## Loads gateway logs:
+  Simulates real network logs from sample_gateway_logs.json.
+## Correlates events:
+  Matches alerts and logs by user, URL, and timestamp proximity.
+## Applies rule-based logic:
+    - incomplete_transfer: detects aborted or partial downloads
+    - blocked_category: flags URLs blocked by policy
+    - filetype_anomaly: surfaces suspicious MIME types
+## Generates a triage report:
+  Summarizes findings in a clear Markdown format (artifacts/report.md).
+## Optional integrations:
+  Can safely connect to ServiceNow or Jira (disabled by default).
+
+## Example Output
+# NetAlert Triage Report
+
+## Alert INC-1001 — LIKELY_FALSE_POSITIVE
+- user: alice
+- src_ip: 10.0.0.15
+- url: http://downloads.example.com/tool.exe
+- score: 3
+
+### Rule hits
+- **incomplete_transfer** (low): Client aborted or reset the stream before completion.
+- **blocked_category** (low): Category 'malware' blocked prior to body delivery.
+- 
 Open the generated report at `artifacts/report.md`.
 
 ## Production hooks (optional)
