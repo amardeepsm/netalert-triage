@@ -92,6 +92,8 @@ In production, this could feed into systems like **ServiceNow**, **Jira**, or **
 
 ---
 ## 🧩 System Flow Diagram
+
+```mermaid
 flowchart LR
     A[🔔 Alerts Feed<br/>sample_alerts.json] -->|ingest.alerts| B[📥 Ingest Module]
     B --> C[🌐 Gateway Logs<br/>sample_gateway_logs.json]
