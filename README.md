@@ -18,13 +18,24 @@ pip install -r requirements.txt
 python -m netalert.run --alerts sample_data/sample_alerts.json --logs sample_data/sample_gateway_logs.json --out artifacts/report.md
 ```
 ## How It Works
-A[🔔 Alert Triggered] ------> B[📥 Alert Data Ingested<br>(sample_alerts.json)]
-B ------> C[🌐 Proxy Log Fetched<br>(sample_gateway_logs.json)]
-C ------> D[⚖️ Correlation<br>Match alert ↔ log (user, URL)]
-D ------> E[🧮 Heuristic Rules<br>incomplete_transfer<br>blocked_category<br>filetype_anomaly]
-E ------> F[🏷️ Label & Score<br>LIKELY_FALSE_POSITIVE or NEEDS_ANALYST]
-F ------> G[🧾 Markdown Report<br>(artifacts/report.md)]
-G ------> H[(🧰 Optional Integration<br>ServiceNow / Jira Update)]
+NetAlert Triage automates the process of reviewing suspicious download alerts, the kind that often turn out to be false positives during on-call shifts.
+
+It follows a simple four-stage flow:
+
+## Collect
+The system reads simulated alert data (sample_alerts.json) and network gateway logs (sample_gateway_logs.json).
+These files represent real signals a platform or security engineer might receive from alerting tools.
+## Correlate
+It automatically links alerts and log entries that share the same user, URL, and timestamp window, creating a single unified event to investigate.
+## Analyze
+The engine applies lightweight heuristic rules from netalert/rules/:
+- incomplete_transfer → download aborted or never finished
+- blocked_category → URL blocked by policy before any payload
+- filetype_anomaly → unusual or executable file type
+Each rule contributes to a confidence score and a status label such as LIKELY_FALSE_POSITIVE or NEEDS_ANALYST_REVIEW.
+## Report
+A summary Markdown report is generated (artifacts/report.md) showing the matched alert, rule hits, and reasoning behind the final verdict.
+This mirrors how a real incident triage system would feed data into ServiceNow, Jira, or Slack.
 
 ## Summary
 
